@@ -1,0 +1,47 @@
+function data_out=cc12_encodefinal(data_in,i,state_init)
+%fbaud=600;%基带信号波特率，1s发送600个码元 %则一个码元持续时间TB=1/600scc12_encodefinal
+%T_total=5;%总的采样时间是5s
+%i=fbaud*T_total;%基带信号码元数
+%data_in=round(rand(1,i));%产生数字基带信号
+state0=0;
+state1=1;
+state2=2;
+state3=3;
+
+%state_init=0;
+cur_state=state_init;
+data_out=[];
+for k=1:i
+    if data_in(k)==0 && cur_state==0
+        data_out=[data_out 0 0];
+        cur_state=state0;
+    else if data_in(k)==1 && cur_state==0
+            data_out=[data_out 1 1];
+            cur_state=state2;
+        else if data_in(k)==0 && cur_state==1
+                data_out=[data_out 1 1];
+                cur_state=state0;
+            else if data_in(k)==1 && cur_state==1
+                    data_out=[data_out 0 0];
+                    cur_state=state2;
+                else if data_in(k)==0 && cur_state==2
+                        data_out=[data_out 1 0];
+                        cur_state=state1;
+                    else if data_in(k)==1 && cur_state==2
+                            data_out=[data_out 0 1];
+                            cur_state=state3;
+                        else if data_in(k)==0 && cur_state==3
+                                data_out=[data_out 0 1];
+                                cur_state=state1;
+                            else if data_in(k)==1 && cur_state==3
+                                    data_out=[data_out 1 0];
+                                    cur_state=state3;
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end
+end
